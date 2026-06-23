@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body>
+
+    <header th:replace="~{general/fragmentos :: header}"></header>
+
+    <main class="container mt-5">
+        <h1 th:text="#{productos.titulo}">Productos</h1>
+        <p th:text="#{productos.descripcion}">
+            En esta sección se mostrará el listado de productos.
+        </p>
+    </main>
+
+    <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    <div th:replace="~{general/fragmentos :: scripts}"></div>
+
+</body>
+</html>
