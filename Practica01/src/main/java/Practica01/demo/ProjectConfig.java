@@ -4,6 +4,7 @@
  */
 
 package Practica01.demo;
+
 import java.util.Locale;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,32 +16,18 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
- *
  * Clase de configuración general del proyecto.
  *
- * Esta clase permite configurar rutas simples del sitio web y también
- * habilitar el cambio de idioma mediante internacionalización.
+ * Permite registrar vistas simples e internacionalización.
  *
- * En esta etapa se trabaja con:
- * - Rutas principales del menú.
- * - Idioma por defecto.
- * - Parámetro para cambiar idioma desde la URL.
- * 
- * 
- * @author natts
+ * @author Nataly Scholz
  */
 
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
 
     /**
-     * Método para registrar vistas directas.
-     *
-     * addViewController permite asociar una URL con una vista HTML ubicada
-     * dentro de src/main/resources/templates.
-     *
-     * Ejemplo:
-     * La ruta "/" buscará el archivo index.html.
+     * Registra vistas directas que no requieren lógica de negocio.
      */
     
     @Override
@@ -61,12 +48,9 @@ public class ProjectConfig implements WebMvcConfigurer {
         // Vista: src/main/resources/templates/categorias.html
         registry.addViewController("/categorias").setViewName("categorias");
     }
-    
+
     /**
-     * Define el idioma por defecto del sistema.
-     *
-     * SessionLocaleResolver guarda el idioma seleccionado durante la sesión
-     * del usuario. En este caso el idioma inicial será español.
+     * Define español como idioma por defecto.
      */
     @Bean
     public LocaleResolver localeResolver() {
@@ -74,13 +58,9 @@ public class ProjectConfig implements WebMvcConfigurer {
         slr.setDefaultLocale(new Locale("es"));
         return slr;
     }
-    
+
     /**
-     * Permite cambiar el idioma usando un parámetro en la URL.
-     *
-     * Ejemplo:
-     * http://localhost:91/?lang=en
-     * http://localhost:91/?lang=es
+     * Permite cambiar idioma usando el parámetro lang.
      */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
@@ -90,10 +70,7 @@ public class ProjectConfig implements WebMvcConfigurer {
     }
 
     /**
-     * Registra el interceptor de cambio de idioma en Spring MVC.
-     *
-     * Gracias a este método, Spring puede detectar el parámetro "lang"
-     * en la URL y cambiar los textos según el archivo de mensajes.
+     * Registra el interceptor de idioma.
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{general/fragmentos :: head}"></head>
+<body>
+
+    <header th:replace="~{general/fragmentos :: header}"></header>
+
+    <main class="container mt-5">
+
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h1>Listado de Suculentas</h1>
+                <p class="text-muted">
+                    Datos cargados dinámicamente desde la base de datos.
+                </p>
+            </div>
+
+            <div class="col-md-4 text-end">
+                <span class="badge bg-success fs-6">
+                    Total: <span th:text="${totalSuculentas}">0</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row" th:if="${suculentas != null and !suculentas.empty}">
+            <div class="col-md-4 mb-4" th:each="suculenta : ${suculentas}">
+                <div class="card h-100 shadow-sm">
+
+                    <img th:src="${suculenta.rutaImagen}"
+                         class="card-img-top"
+                         alt="Imagen de suculenta"
+                         style="height: 220px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${suculenta.nombreComun}">
+                            Nombre común
+                        </h5>
+
+                        <p class="card-text fst-italic" th:text="${suculenta.nombreCientifico}">
+                            Nombre científico
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Familia:</strong>
+                            <span th:text="${suculenta.familia}">Familia</span>
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Color:</strong>
+                            <span th:text="${suculenta.colorPrincipal}">Color</span>
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Altura:</strong>
+                            <span th:text="${suculenta.alturaCm}">0</span> cm
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Riego:</strong>
+                            <span th:text="${suculenta.nivelRiego}">Nivel</span>
+                        </p>
+
+                        <p class="card-text">
+                            <strong>Precio:</strong>
+                            ₡<span th:text="${suculenta.precioEstimado}">0</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning" th:if="${suculentas == null or suculentas.empty}">
+            No hay suculentas registradas en la base de datos.
+        </div>
+
+    </main>
+
+    <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    <div th:replace="~{general/fragmentos :: scripts}"></div>
+
+</body>
+</html>

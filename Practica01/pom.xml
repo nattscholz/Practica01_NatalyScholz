@@ -135,6 +135,26 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <!--
+        Spring Data JPA.
+        Propósito: permite trabajar con entidades, repositorios y operaciones
+        de base de datos usando JPA/Hibernate.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!--
+            MySQL Driver.
+            Propósito: permite que Spring Boot se conecte a una base de datos MySQL.
+        -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
     </dependencies>
 
