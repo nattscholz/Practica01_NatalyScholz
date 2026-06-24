@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Servicio para manejar la lógica de negocio relacionada con categorías.
+ * Servicio de categorías.
  *
- * Esta clase permite obtener categorías desde la base de datos para usarlas
- * en el formulario de suculentas.
+ * Maneja la lógica para listar, buscar, guardar y eliminar categorías.
  *
  * @author Nataly Scholz
  */
@@ -26,10 +25,9 @@ public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
     /**
-     * Obtiene la lista de categorías.
+     * Obtiene categorías.
      *
-     * @param activo si es true, devuelve solo categorías activas;
-     * si es false, devuelve todas las categorías.
+     * @param activo si es true, retorna solo categorías activas.
      * @return lista de categorías
      */
     @Transactional(readOnly = true)
@@ -44,10 +42,25 @@ public class CategoriaService {
     }
 
     /**
-     * Obtiene una categoría específica según su id.
+     * Busca una categoría por id.
      *
-     * @param categoria objeto con el id de la categoría
-     * @return categoría encontrada o null si no existe
+     * @param idCategoria id de la categoría
+     * @return categoría encontrada o null
+     */
+    @Transactional(readOnly = true)
+    public Categoria getCategoriaPorId(Integer idCategoria) {
+        if (idCategoria == null) {
+            return null;
+        }
+
+        return categoriaRepository.findById(idCategoria).orElse(null);
+    }
+
+    /**
+     * Busca una categoría usando un objeto categoria.
+     *
+     * @param categoria objeto con idCategoria
+     * @return categoría encontrada o null
      */
     @Transactional(readOnly = true)
     public Categoria getCategoria(Categoria categoria) {
@@ -57,7 +70,7 @@ public class CategoriaService {
     /**
      * Guarda o actualiza una categoría.
      *
-     * @param categoria categoría que se desea guardar
+     * @param categoria categoría recibida del formulario
      */
     @Transactional
     public void save(Categoria categoria) {
@@ -67,7 +80,7 @@ public class CategoriaService {
     /**
      * Elimina una categoría.
      *
-     * @param categoria categoría que se desea eliminar
+     * @param categoria categoría a eliminar
      */
     @Transactional
     public void delete(Categoria categoria) {

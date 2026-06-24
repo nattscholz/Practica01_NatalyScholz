@@ -13,16 +13,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * Entidad que representa la tabla suculenta de la base de datos.
+ * Entidad que representa la tabla suculenta.
  *
- * Esta clase pertenece a la capa de dominio del patrón MVC.
- * Su función es mapear los campos de la tabla suculenta a atributos Java.
- *
- * También contiene validaciones básicas para evitar registros vacíos
- * o valores numéricos negativos.
+ * Esta clase mapea los datos de MySQL hacia objetos Java.
  *
  * @author Nataly Scholz
  */
+
 @Entity
 @Table(name = "suculenta")
 public class Suculenta implements Serializable {
@@ -30,7 +27,7 @@ public class Suculenta implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Llave primaria autoincremental de la tabla suculenta.
+     * Llave primaria de la suculenta.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,14 +49,14 @@ public class Suculenta implements Serializable {
     private String nombreCientifico;
 
     /**
-     * Familia botánica de la suculenta.
+     * Familia botánica.
      */
     @NotBlank(message = "La familia es obligatoria")
     @Column(name = "familia")
     private String familia;
 
     /**
-     * Color principal de la suculenta.
+     * Color principal.
      */
     @NotBlank(message = "El color principal es obligatorio")
     @Column(name = "color_principal")
@@ -74,7 +71,7 @@ public class Suculenta implements Serializable {
     private BigDecimal alturaCm;
 
     /**
-     * Precio estimado de la suculenta.
+     * Precio estimado.
      */
     @NotNull(message = "El precio es obligatorio")
     @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
@@ -82,14 +79,14 @@ public class Suculenta implements Serializable {
     private BigDecimal precioEstimado;
 
     /**
-     * Nivel de riego recomendado.
+     * Nivel de riego.
      */
     @NotBlank(message = "El nivel de riego es obligatorio")
     @Column(name = "nivel_riego")
     private String nivelRiego;
 
     /**
-     * URL de la imagen almacenada en la nube.
+     * URL de la imagen almacenada en Firebase o en la nube.
      */
     @Column(name = "ruta_imagen")
     private String rutaImagen;
@@ -97,31 +94,13 @@ public class Suculenta implements Serializable {
     /**
      * Relación Muchos a Uno.
      *
-     * Muchas suculentas pueden pertenecer a una sola categoría.
-     * La columna id_categoria en la tabla suculenta funciona como llave foránea.
+     * Muchas suculentas pueden pertenecer a una categoría.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
     public Suculenta() {
-    }
-
-    public Suculenta(Integer idSuculenta, String nombreComun, String nombreCientifico,
-            String familia, String colorPrincipal, BigDecimal alturaCm,
-            BigDecimal precioEstimado, String nivelRiego, String rutaImagen,
-            Categoria categoria) {
-
-        this.idSuculenta = idSuculenta;
-        this.nombreComun = nombreComun;
-        this.nombreCientifico = nombreCientifico;
-        this.familia = familia;
-        this.colorPrincipal = colorPrincipal;
-        this.alturaCm = alturaCm;
-        this.precioEstimado = precioEstimado;
-        this.nivelRiego = nivelRiego;
-        this.rutaImagen = rutaImagen;
-        this.categoria = categoria;
     }
 
     public Integer getIdSuculenta() {

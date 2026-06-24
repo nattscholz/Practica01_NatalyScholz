@@ -5,8 +5,10 @@
 
 package Practica01.demo.service;
 
+import Practica01.demo.domain.Categoria;
 import Practica01.demo.domain.Suculenta;
 import Practica01.demo.firebase.FirebaseStorageService;
+import Practica01.demo.repository.CategoriaRepository;
 import Practica01.demo.repository.SuculentaRepository;
 import java.io.IOException;
 import java.util.List;
@@ -16,15 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Servicio para manejar la lógica de negocio relacionada con suculentas.
+ * Servicio de suculentas.
  *
- * Esta clase pertenece a la capa de negocio del patrón MVC.
- * Permite listar, buscar, guardar y eliminar suculentas.
- * Además, integra Firebase Storage para subir imágenes a la nube.
+ * Aquí se maneja la lógica de negocio para agregar, modificar, listar
+ * y eliminar suculentas.
  *
  * @author Nataly Scholz
  */
-
 @Service
 public class SuculentaService {
 
@@ -32,10 +32,13 @@ public class SuculentaService {
     private SuculentaRepository suculentaRepository;
 
     @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    @Autowired
     private FirebaseStorageService firebaseStorageService;
 
     /**
-     * Obtiene todas las suculentas registradas en la base de datos.
+     * Lista todas las suculentas.
      *
      * @return lista de suculentas
      */
@@ -45,10 +48,10 @@ public class SuculentaService {
     }
 
     /**
-     * Obtiene una suculenta específica según su id.
+     * Busca una suculenta por id.
      *
-     * @param suculenta objeto con el id de la suculenta
-     * @return suculenta encontrada o null si no existe
+     * @param suculenta objeto con idSuculenta
+     * @return suculenta encontrada o null
      */
     @Transactional(readOnly = true)
     public Suculenta getSuculenta(Suculenta suculenta) {
@@ -58,28 +61,51 @@ public class SuculentaService {
     /**
      * Guarda o actualiza una suculenta.
      *
-     * Si se recibe una imagen, se sube a Firebase Storage y se guarda
-     * la URL generada dentro del atributo rutaImagen.
+     * El idCategoria viene separado desde el formulario para evitar
+     * que Hibernate intente guardar una categoría temporal.
      *
-     * @param suculenta objeto recibido desde el formulario
-     * @param imagenFile archivo de imagen recibido desde el formulario
-     * @throws IOException si ocurre un error al subir la imagen
+     * @param suculenta datos de la suculenta
+     * @param imagenFile imagen seleccionada en el formulario
+     * @param idCategoria id de la categoría seleccionada
+     * @throws IOException error al subir imagen
      */
     @Transactional
-    public void save(Suculenta suculenta, MultipartFile imagenFile) throws IOException {
+    public void save(Suculenta suculenta, MultipartFile imagenFile, Integer idCategoria) throws IOException {
 
+        /*
+            1. Buscar la categoría real en la base de datos.
+            Esto evita el error:
+            unsaved transient instance of Categoria.
+        */
+        Categoria categoria = null;
+
+        if (idCategoria != null) {
+            categoria = categoriaRepository.findById(idCategoria).orElse(null);
+        }
+
+        suculenta.setCategoria(categoria);
+
+        /*
+            2. Si se sube una imagen nueva, se guarda en Firebase.
+            Si no se sube imagen nueva, se mantiene rutaImagen con el campo oculto.
+        */
         if (imagenFile != null && !imagenFile.isEmpty()) {
             String rutaImagen = firebaseStorageService.subirImagen(imagenFile);
             suculenta.setRutaImagen(rutaImagen);
         }
 
+        /*
+            3. Guardar en MySQL.
+            Si idSuculenta viene vacío, crea.
+            Si idSuculenta trae valor, actualiza.
+        */
         suculentaRepository.save(suculenta);
     }
 
     /**
-     * Elimina una suculenta de la base de datos.
+     * Elimina una suculenta.
      *
-     * @param suculenta objeto suculenta que se desea eliminar
+     * @param suculenta suculenta a eliminar
      */
     @Transactional
     public void delete(Suculenta suculenta) {

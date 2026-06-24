@@ -6,13 +6,11 @@ package Practica01.demo.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * Entidad que representa la tabla categoria de la base de datos.
+ * Entidad que representa la tabla categoria.
  *
- * Esta clase se relaciona con Suculenta mediante una asociación
- * Uno a Muchos, ya que una categoría puede tener muchas suculentas.
+ * Una categoría permite clasificar las suculentas.
  *
  * @author Nataly Scholz
  */
@@ -23,7 +21,7 @@ public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Llave primaria autoincremental de la tabla categoria.
+     * Llave primaria de la categoría.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +30,6 @@ public class Categoria implements Serializable {
 
     /**
      * Nombre de la categoría.
-     * Ejemplo: Interior, Exterior o Colección.
      */
     @Column(name = "nombre")
     private String nombre;
@@ -45,20 +42,9 @@ public class Categoria implements Serializable {
 
     /**
      * Estado de la categoría.
-     * Permite indicar si la categoría está activa o no.
      */
     @Column(name = "activo")
     private boolean activo;
-
-    /**
-     * Relación Uno a Muchos.
-     *
-     * Una categoría puede tener muchas suculentas.
-     * El mappedBy indica que la relación se controla desde el atributo
-     * categoria dentro de la clase Suculenta.
-     */
-    @OneToMany(mappedBy = "categoria")
-    private List<Suculenta> suculentas;
 
     public Categoria() {
     }
@@ -100,13 +86,5 @@ public class Categoria implements Serializable {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
-    }
-
-    public List<Suculenta> getSuculentas() {
-        return suculentas;
-    }
-
-    public void setSuculentas(List<Suculenta> suculentas) {
-        this.suculentas = suculentas;
     }
 }

@@ -9,11 +9,7 @@ import Practica01.demo.domain.Suculenta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Repositorio de acceso a datos para la entidad Suculenta.
- *
- * Esta interfaz pertenece a la capa de datos del patrón MVC.
- * Hereda de JpaRepository para utilizar operaciones como:
- * findAll, findById, save y delete.
+ * Repositorio para la tabla suculenta.
  *
  * @author Nataly Scholz
  */

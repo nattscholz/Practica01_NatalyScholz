@@ -8,10 +8,9 @@ import Practica01.demo.domain.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Repositorio para acceder a los datos de la tabla categoria.
+ * Repositorio para la tabla categoria.
  *
- * Hereda de JpaRepository para utilizar operaciones como:
- * findAll, findById, save y delete.
+ * JpaRepository permite usar findAll, findById, save y delete.
  *
  * @author Nataly Scholz
  */
