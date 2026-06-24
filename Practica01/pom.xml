@@ -155,6 +155,17 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <!--
+            Firebase Admin.
+            Propósito: permite conectar Spring Boot con Firebase Storage
+            para subir imágenes de suculentas a la nube.
+        -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.7.0</version>
+        </dependency>
 
     </dependencies>
 

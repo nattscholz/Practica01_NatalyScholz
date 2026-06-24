@@ -6,18 +6,22 @@
 package Practica01.demo.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * Entidad que representa la tabla suculenta de la base de datos.
  *
- * Esta clase pertenece a la capa de dominio dentro del patrón MVC.
+ * Esta clase pertenece a la capa de dominio del patrón MVC.
  * Su función es mapear los campos de la tabla suculenta a atributos Java.
  *
- * Tabla: suculenta
+ * También contiene validaciones básicas para evitar registros vacíos
+ * o valores numéricos negativos.
  *
- * @author natts
+ * @author Nataly Scholz
  */
 @Entity
 @Table(name = "suculenta")
@@ -35,55 +39,89 @@ public class Suculenta implements Serializable {
 
     /**
      * Nombre común de la suculenta.
-     * Ejemplo: Aloe Vera.
      */
+    @NotBlank(message = "El nombre común es obligatorio")
     @Column(name = "nombre_comun")
     private String nombreComun;
 
     /**
      * Nombre científico de la suculenta.
-     * Ejemplo: Aloe barbadensis miller.
      */
+    @NotBlank(message = "El nombre científico es obligatorio")
     @Column(name = "nombre_cientifico")
     private String nombreCientifico;
 
     /**
-     * Familia botánica a la que pertenece la suculenta.
+     * Familia botánica de la suculenta.
      */
+    @NotBlank(message = "La familia es obligatoria")
+    @Column(name = "familia")
     private String familia;
 
     /**
-     * Color principal o característico de la planta.
+     * Color principal de la suculenta.
      */
+    @NotBlank(message = "El color principal es obligatorio")
     @Column(name = "color_principal")
     private String colorPrincipal;
 
     /**
      * Altura aproximada en centímetros.
      */
+    @NotNull(message = "La altura es obligatoria")
+    @DecimalMin(value = "0.01", message = "La altura debe ser mayor a 0")
     @Column(name = "altura_cm")
     private BigDecimal alturaCm;
 
     /**
-     * Precio estimado de venta.
+     * Precio estimado de la suculenta.
      */
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
     @Column(name = "precio_estimado")
     private BigDecimal precioEstimado;
 
     /**
      * Nivel de riego recomendado.
-     * Ejemplo: Bajo, Medio o Alto.
      */
+    @NotBlank(message = "El nivel de riego es obligatorio")
     @Column(name = "nivel_riego")
     private String nivelRiego;
 
     /**
-     * Ruta o URL de la imagen almacenada en la nube.
+     * URL de la imagen almacenada en la nube.
      */
     @Column(name = "ruta_imagen")
     private String rutaImagen;
 
+    /**
+     * Relación Muchos a Uno.
+     *
+     * Muchas suculentas pueden pertenecer a una sola categoría.
+     * La columna id_categoria en la tabla suculenta funciona como llave foránea.
+     */
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
+
     public Suculenta() {
+    }
+
+    public Suculenta(Integer idSuculenta, String nombreComun, String nombreCientifico,
+            String familia, String colorPrincipal, BigDecimal alturaCm,
+            BigDecimal precioEstimado, String nivelRiego, String rutaImagen,
+            Categoria categoria) {
+
+        this.idSuculenta = idSuculenta;
+        this.nombreComun = nombreComun;
+        this.nombreCientifico = nombreCientifico;
+        this.familia = familia;
+        this.colorPrincipal = colorPrincipal;
+        this.alturaCm = alturaCm;
+        this.precioEstimado = precioEstimado;
+        this.nivelRiego = nivelRiego;
+        this.rutaImagen = rutaImagen;
+        this.categoria = categoria;
     }
 
     public Integer getIdSuculenta() {
@@ -156,5 +194,13 @@ public class Suculenta implements Serializable {
 
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

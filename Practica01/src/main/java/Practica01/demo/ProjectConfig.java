@@ -20,7 +20,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
  *
  * Permite registrar vistas simples e internacionalización.
  *
- * @author Nataly Scholz
+ * @author natts
  */
 
 @Configuration
@@ -37,16 +37,6 @@ public class ProjectConfig implements WebMvcConfigurer {
         // URL: http://localhost:91/
         // Vista: src/main/resources/templates/index.html
         registry.addViewController("/").setViewName("index");
-
-        // Ruta para mostrar la sección de productos.
-        // URL: http://localhost:91/productos
-        // Vista: src/main/resources/templates/productos.html
-        registry.addViewController("/productos").setViewName("productos");
-
-        // Ruta para mostrar la sección de categorías.
-        // URL: http://localhost:91/categorias
-        // Vista: src/main/resources/templates/categorias.html
-        registry.addViewController("/categorias").setViewName("categorias");
     }
 
     /**
